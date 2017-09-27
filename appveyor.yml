@@ -1,0 +1,27 @@
+version: build-{build}.{branch}
+
+os: Windows Server 2012 R2
+
+clone_folder: c:\gopath\src\github.com\tdsh\itunes-win
+shallow_clone: true # for startup speed
+
+environment:
+  GOPATH: C:\gopath
+
+platform:
+  - x64
+
+install:
+  # some helpful output for debugging builds
+  - go version
+  - go env
+  - go get -u github.com/go-ole/go-ole
+
+build_script:
+  - cd c:\gopath\src\github.com\tdsh\itunes-win\itunes
+  - go get -v -t -d ./...
+  - go build
+
+test: off
+
+deploy: off
