@@ -1,5 +1,3 @@
-// +build windows
-
 package itunes
 
 // GetCount returns the number of track in this tracks.
