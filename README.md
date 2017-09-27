@@ -1,6 +1,6 @@
 # itunes-win
 
-[![Build status](https://ci.appveyor.com/api/projects/status/t9wbgwo0de3b2o0n?svg=true)]
+[![Build status](https://ci.appveyor.com/api/projects/status/t9wbgwo0de3b2o0n?svg=true)](https://ci.appveyor.com/project/tdsh/itunes-win)
 [![GoDoc](https://godoc.org/github.com/tdsh/itunes-win/itunes?status.svg)](https://godoc.org/github.com/tdsh/itunes-win/itunes)
 
 Package itunes-win enables you to handle iTunes on Windows in Go. This is
