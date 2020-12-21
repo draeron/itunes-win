@@ -9,6 +9,10 @@ type COM struct {
 	obj *ole.IDispatch
 }
 
+func (c *COM) IsNil() bool {
+	return c.obj == nil
+}
+
 // ITunes is an object to abstract top level iTunes application. This represents
 // IiTunes object in COM interface.
 type ITunes struct {

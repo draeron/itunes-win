@@ -3,6 +3,7 @@ package itunes
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 // Delete deletes this track.
@@ -39,6 +40,14 @@ func getStringProperty(track *Track, property string) (string, error) {
 		return "", err
 	}
 	return n.Value().(string), nil
+}
+
+func getDateProperty(track *Track, property string) (time.Time, error) {
+	n, err := track.obj.GetProperty(property)
+	if err != nil {
+		return time.Time{}, err
+	}
+	return n.Value().(time.Time), nil
 }
 
 func getInt64Property(track *Track, property string) (int64, error) {
@@ -80,6 +89,14 @@ func (t *Track) GetKind() (string, error) {
 		ret = "Shared library track"
 	}
 	return ret, err
+}
+
+func (t *Track) GetPersistentIDLow() (int64, error) {
+	return getInt64Property(t, "ITObjectPersistentIDLow")
+}
+
+func (t *Track) GetPersistentIDHigh() (int64, error) {
+	return getInt64Property(t, "ITObjectPersistentIDHigh")
 }
 
 // GetAlbum returns the name of the album containing the track.
@@ -155,6 +172,14 @@ func (t *Track) GetCategory() (string, error) {
 // GetDescription returns the description for the track.
 func (t *Track) GetDescription() (string, error) {
 	return getStringProperty(t, "Description")
+}
+
+func (t *Track) GetRating() (int64, error) {
+	return getInt64Property(t, "Rating")
+}
+
+func (t *Track) GetDateAdded() (time.Time, error) {
+	return getDateProperty(t, "DateAdded")
 }
 
 // GetAlbumRating returns the user or computed rating of the album that this
@@ -236,6 +261,10 @@ func (t *Track) SetDescription(val string) error {
 // track.
 func (t *Track) SetRememberBookmark(val bool) error {
 	return setProperty(t, "RememberBookmark", val)
+}
+
+func (t *Track) SetRating(val int) error {
+	return setProperty(t, "Rating", val)
 }
 
 // SetAlbumRating sets the user or computed rating of the album that this

@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/tdsh/itunes-win/itunes"
+	"github.com/draeron/itunes-win/itunes"
 )
 
 func main() {

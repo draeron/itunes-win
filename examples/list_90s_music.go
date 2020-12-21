@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/tdsh/itunes-win/itunes"
+	"github.com/draeron/itunes-win/itunes"
 )
 
 const logFile = "C:/Users/jdoe/Desktop/90s_music.log"

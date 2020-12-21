@@ -3,6 +3,8 @@ package itunes
 import (
 	"fmt"
 	"net/url"
+
+	"github.com/go-ole/go-ole"
 )
 
 // GetMainPlaylist returns main library playlist, Playlist.
@@ -126,4 +128,22 @@ func (i *ITunes) UpdatePodcastFeeds() error {
 		return nil
 	}
 	return nil
+}
+
+func (i *ITunes) ObjectPersistentID(obj interface{}) (int64, error) {
+	var dispatch *ole.IDispatch
+	if track, ok := obj.(*Track); ok {
+		dispatch = track.obj
+	} else if playlist, ok := obj.(*Playlist); ok {
+		dispatch = playlist.obj
+	} else {
+		panic("object type is not supported")
+	}
+
+	var low, high int
+	_, err := i.obj.CallMethod("GetITObjectPersistentIDs", dispatch, &high, &low)
+	if err != nil {
+		return 0, err
+	}
+	return int64(high)<<32 | int64(low), nil
 }

@@ -36,4 +36,4 @@ GetTrackByName:
 	}
 
 */
-package itunes // import "github.com/tdsh/itunes-win/itunes"
+package itunes // import "github.com/draeron/itunes-win/itunes"
