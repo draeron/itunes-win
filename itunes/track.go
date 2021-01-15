@@ -42,6 +42,11 @@ func getStringProperty(track *Track, property string) (string, error) {
 	return n.Value().(string), nil
 }
 
+func setStringProperty(track *Track, property string, value string) error {
+	_, err := track.obj.PutProperty(property, value)
+	return err
+}
+
 func getDateProperty(track *Track, property string) (time.Time, error) {
 	n, err := track.obj.GetProperty(property)
 	if err != nil {

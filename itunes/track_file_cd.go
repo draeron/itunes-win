@@ -20,6 +20,13 @@ func (t *Track) GetLocation() (string, error) {
 	return getStringProperty(t, "Location")
 }
 
+func (t *Track) SetLocation(location string) error {
+	if t.isFileOrCDTrack() == false {
+		return fmt.Errorf("Not a file or CD track")
+	}
+	return setStringProperty(t, "Location", location)
+}
+
 // GetRememberBookmark returns true if playback position is remembered for this
 // track.
 func (t *Track) GetRememberBookmark() (bool, error) {
