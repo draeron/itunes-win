@@ -5,8 +5,8 @@ import (
 )
 
 func (t *Track) isFileOrCDTrack() bool {
-	k, _ := getKind(t)
-	if k == 1 || k == 2 {
+	kind := t.Kind()
+	if kind == ITTrackKindFile || kind == ITTrackKindCD {
 		return true
 	}
 	return false
@@ -17,14 +17,14 @@ func (t *Track) GetLocation() (string, error) {
 	if t.isFileOrCDTrack() == false {
 		return "", fmt.Errorf("Not a file or CD track")
 	}
-	return getStringProperty(t, "Location")
+	return t.getStringProperty("Location")
 }
 
 func (t *Track) SetLocation(location string) error {
 	if t.isFileOrCDTrack() == false {
 		return fmt.Errorf("Not a file or CD track")
 	}
-	return setStringProperty(t, "Location", location)
+	return t.setStringProperty("Location", location)
 }
 
 // GetRememberBookmark returns true if playback position is remembered for this
@@ -33,7 +33,7 @@ func (t *Track) GetRememberBookmark() (bool, error) {
 	if t.isFileOrCDTrack() == false {
 		return false, fmt.Errorf("Not a file or CD track")
 	}
-	return getBoolProperty(t, "RememberBookmark")
+	return t.getBoolProperty("RememberBookmark")
 }
 
 // GetExcludeFromShuffle true if this track is skipped when shuffling.
@@ -41,7 +41,7 @@ func (t *Track) GetExcludeFromShuffle() (bool, error) {
 	if t.isFileOrCDTrack() == false {
 		return false, fmt.Errorf("Not a file or CD track")
 	}
-	return getBoolProperty(t, "ExcludeFromShuffle")
+	return t.getBoolProperty("ExcludeFromShuffle")
 }
 
 // GetLylics returns the lyrics for the track.
@@ -49,7 +49,7 @@ func (t *Track) GetLylics() (string, error) {
 	if t.isFileOrCDTrack() == false {
 		return "", fmt.Errorf("Not a file or CD track")
 	}
-	return getStringProperty(t, "Lylics")
+	return t.getStringProperty("Lylics")
 }
 
 // GetAlbumArtist returns the name of the album artist of the track.
@@ -57,5 +57,5 @@ func (t *Track) GetAlbumArtist() (string, error) {
 	if t.isFileOrCDTrack() == false {
 		return "", fmt.Errorf("Not a file or CD track")
 	}
-	return getStringProperty(t, "AlbumArtist")
+	return t.getStringProperty("AlbumArtist")
 }

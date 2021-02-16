@@ -77,6 +77,64 @@ func (i *ITunes) Stop() error {
 	return nil
 }
 
+func (i *ITunes) Playlist(pid PersistentID) (*Playlist, error) {
+	// should return a IITSource interface
+	libSource, err := i.getObjectProperty("LibrarySource")
+	if err != nil {
+		return nil, err
+	}
+
+	if ITSourceKind(libSource.getKind()) != ITSourceKindLibrary {
+		return nil, fmt.Errorf("not a source library kind")
+	}
+
+	// should return a IITPlaylistCollection interface
+	collection, err := libSource.getObjectProperty("Playlists")
+	if err != nil {
+		return nil, err
+	}
+
+	obj, err := collection.getObjectByPersistentID(pid)
+	if err != nil {
+		return nil, err
+	}
+	return &Playlist{*obj}, nil
+}
+
+func (i *ITunes) Playlists() (*PlaylistCollection, error) {
+	libSource, err := i.getObjectProperty("LibrarySource")
+	if err != nil {
+		return nil, err
+	}
+
+	if ITSourceKind(libSource.getKind()) != ITSourceKindLibrary {
+		return nil, fmt.Errorf("not a source library kind")
+	}
+
+	// should return a IITPlaylistCollection interface
+	obj, err := libSource.getObjectProperty("Playlists")
+	if err != nil {
+		return nil, err
+	}
+	return &PlaylistCollection{*obj}, nil
+}
+
+func (i *ITunes) CreateFolder(name string) (*Playlist, error) {
+	if ret, err := i.obj.CallMethod("CreateFolder", name); err != nil {
+		return nil, err
+	} else {
+		return &Playlist{COM{ret.ToIDispatch()}}, nil
+	}
+}
+
+func (i *ITunes) CreatePlaylist(name string) (*Playlist, error) {
+	if ret, err := i.obj.CallMethod("CreatePlaylist", name); err != nil {
+		return nil, err
+	} else {
+		return &Playlist{COM{ret.ToIDispatch()}}, nil
+	}
+}
+
 // CurrentEncoder returns the currently selected encoder (AAC, MP3, AIFF, WAV, etc).
 func (i *ITunes) CurrentEncoder() (string, error) {
 	r, _ := i.obj.GetProperty("CurrentEncoder")
@@ -130,12 +188,16 @@ func (i *ITunes) UpdatePodcastFeeds() error {
 	return nil
 }
 
-func (i *ITunes) ObjectPersistentID(obj interface{}) (int64, error) {
+func (i *ITunes) ObjectPersistentID(obj interface{}) (PersistentID, error) {
 	var dispatch *ole.IDispatch
-	if track, ok := obj.(*Track); ok {
-		dispatch = track.obj
-	} else if playlist, ok := obj.(*Playlist); ok {
-		dispatch = playlist.obj
+	if cobj, ok := obj.(*Track); ok {
+		dispatch = cobj.obj
+	} else if cobj, ok := obj.(*Playlist); ok {
+		dispatch = cobj.obj
+	} else if cobj, ok := obj.(*TrackCollection); ok {
+		dispatch = cobj.obj
+	} else if cobj, ok := obj.(*ITunes); ok {
+		dispatch = cobj.obj
 	} else {
 		panic("object type is not supported")
 	}
@@ -145,5 +207,5 @@ func (i *ITunes) ObjectPersistentID(obj interface{}) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return int64(high)<<32 | int64(low), nil
+	return PersistentID(high)<<32 | PersistentID(low), nil
 }

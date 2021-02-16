@@ -6,6 +6,7 @@
 - Added Tracks.GetTrackByPersistentID
 - Added ITunes.ObjectPersistentID
 - Added Location field writing
+- code cleanup / refactor
 
 ---
 

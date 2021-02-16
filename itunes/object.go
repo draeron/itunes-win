@@ -25,13 +25,19 @@ type Playlist struct {
 	COM
 }
 
-// Tracks is an object to abstract a collection of music track. This is child
-// for Playlist struct and represents IITTrackCollection object in COM interface.
-type Tracks struct {
+// Playlist is an object to abstract the collection of library playlists. This is child
+// for ITunes struct and represents IITPlaylistCollection object in COM interface.
+type PlaylistCollection struct {
 	COM
 }
 
-// Track is an object to abstract a music track. This is child for Tracks struct
+// TrackCollection is an object to abstract a collection of music track. This is child
+// for Playlist struct and represents IITTrackCollection object in COM interface.
+type TrackCollection struct {
+	COM
+}
+
+// Track is an object to abstract a music track. This is child for Track struct
 // and represents IITTrack object in COM interface.
 type Track struct {
 	COM
