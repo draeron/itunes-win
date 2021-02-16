@@ -18,8 +18,16 @@ func (t *TrackCollection) ByIndex(index int) (*Track, error) {
 	return &Track{*obj}, nil
 }
 
+func (t *TrackCollection) ByPlayOrder(order int) (*Track, error) {
+	obj, err := t.getObjectProperty("ItemByPlayOrder", order)
+	if err != nil || obj == nil || obj.IsNil() {
+		return nil, err
+	}
+	return &Track{*obj}, nil
+}
+
 // GetTrackByName returns Track in t with the specified name.
-func (t *TrackCollection) ByName(name PersistentID) (*Track, error) {
+func (t *TrackCollection) ByName(name string) (*Track, error) {
 	obj, err := t.getObjectProperty("ItemByName", name)
 	if err != nil || obj == nil || obj.IsNil() {
 		return nil, err

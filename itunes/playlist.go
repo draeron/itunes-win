@@ -93,16 +93,16 @@ func (p *Playlist) SearchSongNames(word string) (int, *TrackCollection, error) {
 }
 
 // AddFile adds path to this playlist.
-func (p *Playlist) AddFile(path string) error {
+func (p *Playlist) AddFile(path string) (*OperationStatus, error) {
 	_, err := os.Stat(path)
 	if err != nil {
-		return fmt.Errorf("iTunes library directory access error\n\n%v", err)
+		return nil, fmt.Errorf("iTunes library directory access error\n\n%v", err)
 	}
-	_, err = p.obj.CallMethod("AddFile", path)
+	status, err := p.obj.CallMethod("AddFile", path)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return &OperationStatus{COM{status.ToIDispatch()}}, nil
 }
 
 // GetTracks returns Tracks in this playlist.
